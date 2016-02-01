@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +10,16 @@ namespace abc_bank
     {
         private String name;
         private List<Account> accounts;
-
+        private int id;
         public Customer(String name)
         {
             this.name = name;
             this.accounts = new List<Account>();
         }
-
+        public int ID
+        {
+            get { return id; }
+        }
         public String GetName()
         {
             return name;
@@ -28,6 +31,55 @@ namespace abc_bank
             return this;
         }
 
+        public void TransferBetweenAccs(double amount, int FromAccount, int ToAccount, Customer a = null, Customer b = null)
+        {
+            object o1, o2;
+
+            if (a == null && b == null)
+            {
+                a = b = this;
+                if (FromAccount > ToAccount)
+                {
+                    o1 = this.accounts[FromAccount];
+                    o2 = this.accounts[ToAccount];
+                }
+                else
+                {
+                    o2 = this.accounts[FromAccount];
+                    o1 = this.accounts[ToAccount];
+                }
+            }
+            else
+            {if (a.ID > b.ID)
+                {
+                    o1 = a.accounts[FromAccount];
+                    o2 = b.accounts[ToAccount];
+                }
+            else
+                {
+                    o2 = a.accounts[FromAccount];
+                    o1 = b.accounts[ToAccount];
+                }
+            }
+            if (a.accounts[FromAccount] != null && b.accounts[ToAccount] != null && (FromAccount != ToAccount || a != b))//validate accounts
+            {
+                lock (o1)
+                {    lock (o2)
+                    {
+                        double totalAmount = 0;
+                        foreach (var t in a.accounts[FromAccount].transactions)
+                        {
+                            totalAmount += t.amount;
+                        }
+                        if (totalAmount < amount)//validate amount
+                            throw new ArgumentException("Insufficient amount");
+                        a.accounts[FromAccount].Withdraw(amount);
+                        b.accounts[ToAccount].Deposit(amount);
+                    }
+            }
+            }
+            else throw new ArgumentException("Invalid Account");
+        }
         public int GetNumberOfAccounts()
         {
             return accounts.Count;
@@ -84,7 +136,7 @@ namespace abc_bank
 
         private String ToDollars(double d)
         {
-            return String.Format("$%,.2f", Math.Abs(d));
+            return String.Format("${0:#,###.##}", Math.Abs(d));
         }
     }
 }
