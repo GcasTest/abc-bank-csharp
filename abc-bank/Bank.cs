@@ -20,7 +20,8 @@ namespace abc_bank
             customers.Add(customer);
         }
 
-        public String CustomerSummary() {
+        public String CustomerSummary()
+        {
             String summary = "Customer Summary";
             foreach (Customer c in customers)
                 summary += "\n - " + c.GetName() + " (" + format(c.GetNumberOfAccounts(), "account") + ")";
@@ -34,13 +35,22 @@ namespace abc_bank
             return number + " " + (number == 1 ? word : word + "s");
         }
 
-        public double totalInterestPaid() {
+        public double totalInterestPaid()
+        {
             double total = 0;
-            foreach(Customer c in customers)
+
+            foreach (Customer c in customers)
                 total += c.TotalInterestEarned();
             return total;
         }
 
+        public void dailyInterestAccure()
+        {
+            foreach (Customer c in customers)
+                c.dailyInterestAccure();
+        }
+
+        //Unused Method -- can be removed
         public String GetFirstCustomer()
         {
             try
