@@ -82,9 +82,40 @@ namespace abc_bank
             return s;
         }
 
+        //Payal 02/01/2016 : Modified this method to accept proper Currency formatter.
         private String ToDollars(double d)
         {
-            return String.Format("$%,.2f", Math.Abs(d));
+            return String.Format("{0:C2}", Math.Abs(d));
+        }
+
+        //Payal 02/01/2016 : Created new method to transfer money from one account to another
+        public Customer IntraAccountTransfer(Account depositalAccount, Account withrawingAccount, double amount)
+        {
+            try
+            {
+                if (!accounts.Contains(withrawingAccount))
+                    throw new ArgumentException("The Withdrawing Account doesn't belong to customer:  " + this.name);
+                if (!accounts.Contains(depositalAccount))
+                    throw new ArgumentException("The Deposited Account doesn't belong to customer:  " + this.name);                
+                    withrawingAccount.Withdraw(amount);
+                    depositalAccount.Deposit(amount);                
+            }
+            catch (Exception ex)
+            {
+                //Catch the exception and display it
+                Console.Write(ex.StackTrace);
+                throw ex;
+            }
+            return this;
+        }
+
+        //Payal 02/01/2016 : Created new method to get total interest on daily basis
+        public double TotalInterestAccruedDaily()
+        {
+            double total = 0;
+            foreach (Account a in accounts)
+                total += a.InterestAccruedDaily();
+            return total;
         }
     }
 }
