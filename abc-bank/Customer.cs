@@ -40,6 +40,39 @@ namespace abc_bank
                 total += a.InterestEarned();
             return total;
         }
+        
+        //Calculate daily interest and add to accounts
+        public void updateInterest()
+	{
+		foreach(Account a in accounts)
+		{
+			a.updateInterest();
+		}
+	}
+	
+	public void Transfer(Account from, Account to, double amount)
+	{
+		if (amount <= 0) 
+		{ 
+	                throw new ArgumentException("amount must be greater than zero"); 
+		}
+
+		if(from.sumTransactions() < amount)
+		{
+			throw new Exception("insufficient fund");
+		}
+
+		try
+		{
+			from.Withdraw(amount);
+			to.Deposit(amount);
+		}
+		catch(Exception ex)
+		{
+ 			throw new Exception("transfer failed!", ex);
+		}
+
+	}
 
         public String GetStatement() 
         {
@@ -61,13 +94,13 @@ namespace abc_bank
 
            //Translate to pretty account type
             switch(a.GetAccountType()){
-                case Account.CHECKING:
+                case AccountType.CHECKING:
                     s += "Checking Account\n";
                     break;
-                case Account.SAVINGS:
+                case AccountType.SAVINGS:
                     s += "Savings Account\n";
                     break;
-                case Account.MAXI_SAVINGS:
+                case AccountType.MAXI_SAVINGS:
                     s += "Maxi Savings Account\n";
                     break;
             }

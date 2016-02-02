@@ -40,6 +40,14 @@ namespace abc_bank
                 total += c.TotalInterestEarned();
             return total;
         }
+        
+        public viod updateInterest()
+	{
+        	foreach(Customer c in customers)
+		{
+			c.updateInterest();
+		}
+	}
 
         public String GetFirstCustomer()
         {
