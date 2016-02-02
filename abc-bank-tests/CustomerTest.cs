@@ -50,13 +50,23 @@ namespace abc_bank_tests
         }
 
         [TestMethod]
-        [Ignore]
+        //[Ignore]
         public void TestThreeAccounts()
         {
-            Customer oscar = new Customer("Oscar")
-                    .OpenAccount(new Account(Account.SAVINGS));
+            Customer oscar = new Customer("Oscar").OpenAccount(new Account(Account.SAVINGS));
             oscar.OpenAccount(new Account(Account.CHECKING));
-            Assert.AreEqual(3, oscar.GetNumberOfAccounts());
+            Assert.AreEqual(2, oscar.GetNumberOfAccounts());
+        }
+
+        [TestMethod]
+        public void TestMoneyTransfer()
+        {
+            Account maxiAccount = new Account(Account.MAXI_SAVINGS);
+            Customer oscar = new Customer("Oscar").OpenAccount(savingsAccount);
+            oscar.OpenAccount(maxiAccount);
+            savingsAccount.Deposit(1500.0);
+            maxiAccount.Deposit(3000.0);
+            Assert.AreEqual(oscar, oscar.IntraAccountTransfer(maxiAccount, savingsAccount, 500));
         }
     }
 }

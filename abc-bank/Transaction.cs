@@ -10,7 +10,8 @@ namespace abc_bank
     {
         public readonly double amount;
 
-        private DateTime transactionDate;
+        //Payal 02/01/2016 : : Modified the access modifier from private to public.
+        public DateTime transactionDate;
 
         public Transaction(double amount) 
         {
