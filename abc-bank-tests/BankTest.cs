@@ -74,5 +74,20 @@ namespace abc_bank_tests
 
             Assert.AreEqual(2.0, bank.totalInterestPaid(), DOUBLE_DELTA);
         }
+
+        [TestMethod]
+        public void InterestAccured()
+        {
+            Bank bank = new Bank();
+            Account maxiSavingsAccount = new Account(Account.MAXI_SAVINGS);
+            bank.AddCustomer(new Customer("Bill").OpenAccount(maxiSavingsAccount));
+
+            maxiSavingsAccount.Deposit(3000.0);
+            maxiSavingsAccount.Withdraw(1000.0);
+
+            bank.DailyInterestAccure();
+
+            Assert.AreEqual(2.0, bank.totalInterestPaid());
+        }
     }
 }

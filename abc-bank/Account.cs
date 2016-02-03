@@ -82,6 +82,7 @@ namespace abc_bank
 
         public double InterestEarned()
         {
+            //Uncomment this to get the total of daily interest accured.
             // return CheckIfTransactionsExist(false, true);
             return calculateInterest();
         }

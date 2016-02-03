@@ -39,10 +39,9 @@ namespace abc_bank
             return accounts.Count;
         }
 
-        public void dailyInterestAccure()
+        public List<Account> getAccounts()
         {
-            foreach (Account a in accounts)
-                a.dailyInterestAccure();
+            return accounts;
         }
 
         public double TotalInterestEarned()
@@ -112,8 +111,8 @@ namespace abc_bank
             {
                 lock (lockobject)
                 {
-                    accountFrom.Withdraw(amount);
-                    accountTo.Deposit(amount);
+                    accountFrom.Withdraw(amount, String.Format("Trasfer to account {0}", accountTo.AccountNumber()));
+                    accountTo.Deposit(amount, String.Format("Trasfer from account {0}", accountFrom.AccountNumber()));
                 }
             }
             catch (Exception e)

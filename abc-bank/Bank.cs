@@ -9,6 +9,7 @@ namespace abc_bank
     public class Bank
     {
         private List<Customer> customers;
+        BankApp ict = new BankApp();
 
         public Bank()
         {
@@ -35,6 +36,17 @@ namespace abc_bank
             return number + " " + (number == 1 ? word : word + "s");
         }
 
+        public List<Account> getAllAccounts()
+        {
+            List<Account> bankAllAccounts = new List<Account>();
+            foreach (Customer c in customers)
+            {
+                bankAllAccounts.InsertRange(bankAllAccounts.Count, c.getAccounts());
+            }
+
+            return bankAllAccounts;
+        }
+
         public double totalInterestPaid()
         {
             double total = 0;
@@ -44,10 +56,24 @@ namespace abc_bank
             return total;
         }
 
-        public void dailyInterestAccure()
+        public bool DailyInterestAccure()
         {
-            foreach (Customer c in customers)
-                c.dailyInterestAccure();
+            try
+            {
+                List<Task> tasks = new List<Task>();
+                foreach (Account acc in getAllAccounts())
+                {
+                    Task t = Task.Run(() => acc.dailyInterestAccure());
+                    tasks.Add(t);
+                }
+                Task.WaitAll(tasks.ToArray());
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+                return false;
+            }
         }
 
         //Unused Method -- can be removed
