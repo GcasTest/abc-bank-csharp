@@ -10,9 +10,18 @@ namespace abc_bank
     {
         private List<Customer> customers;
 
-        public Bank()
+        private static Bank instance = null;
+
+        private Bank()
         {
             customers = new List<Customer>();
+        }
+
+        public static Bank getInstance()
+        {
+            if (instance == null)
+                instance = new Bank();
+            return instance;
         }
 
         public void AddCustomer(Customer customer)
@@ -34,25 +43,61 @@ namespace abc_bank
             return number + " " + (number == 1 ? word : word + "s");
         }
 
+        public List<Account> getAllAccounts()
+        {
+            List<Account> bankAllAccounts = new List<Account>();
+            foreach (Customer c in customers)
+            {
+                bankAllAccounts.InsertRange(bankAllAccounts.Count, c.getAccounts());
+            }
+
+            return bankAllAccounts;
+        }
+
         public double totalInterestPaid() {
             double total = 0;
-            foreach(Customer c in customers)
+            
+            foreach (Customer c in customers)
                 total += c.TotalInterestEarned();
             return total;
         }
 
+        public bool DailyInterestAccure()
+        {
+            try
+            {
+                List<Task> tasks = new List<Task>();
+                foreach (Account acc in getAllAccounts())
+                {
+                    Task t = Task.Run(() => acc.dailyInterestAccure());
+                    tasks.Add(t);
+                }
+                Task.WaitAll(tasks.ToArray());
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw e;
+                return false;
+            }
+        }
+
+        //Unused Method -- can be removed
         public String GetFirstCustomer()
         {
             try
             {
-                customers = null;
-                return customers[0].GetName();
+                //customers = null;
+                if (customers.Count > 0)
+                    return customers[0].GetName();
             }
             catch (Exception e)
             {
                 Console.Write(e.StackTrace);
                 return "Error";
             }
+
+            return String.Empty;
         }
     }
 }
