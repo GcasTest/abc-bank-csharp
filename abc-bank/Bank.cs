@@ -81,20 +81,23 @@ namespace abc_bank
                 return false;
             }
         }
-       
+
         //Unused Method -- can be removed
         public String GetFirstCustomer()
         {
             try
             {
-                customers = null;
-                return customers[0].GetName();
+                //customers = null;
+                if (customers.Count > 0)
+                    return customers[0].GetName();
             }
             catch (Exception e)
             {
                 Console.Write(e.StackTrace);
                 return "Error";
             }
+
+            return String.Empty;
         }
     }
 }
