@@ -24,7 +24,7 @@ namespace abc_bank
 
         public System.Object lockObject = new System.Object();
 
-        public Account(int accountType)
+        public Account(int accountType) 
         {
             this.accountType = accountType;
             this.transactions = new List<Transaction>();
@@ -43,7 +43,7 @@ namespace abc_bank
             return currentBalance;
         }
 
-        public void Deposit(double amount, string memo = "")
+        public void Deposit(double amount, string memo = "") 
         {
             if (amount <= 0)
             {
@@ -51,15 +51,14 @@ namespace abc_bank
             }
             else {
                 // Lock the operation so that no one can perform withdraw while deposit in progress.               
-                lock (lockObject)
-                {
-                    currentBalance = currentBalance + amount;
+                lock (lockObject){
+                    currentBalance = currentBalance + amount;        
                     transactions.Add(new Transaction(amount, memo));
                 }
             }
         }
 
-        public void Withdraw(double amount, string memo = "")
+        public void Withdraw(double amount,string memo = "") 
         {
             if (amount <= 0)
             {
@@ -70,14 +69,16 @@ namespace abc_bank
                 lock (lockObject)
                 {
                     currentBalance = currentBalance - amount;
-                    transactions.Add(new Transaction(-amount, memo));
+                    transactions.Add(new Transaction(-amount,memo));
                 }
             }
         }
 
         public void dailyInterestAccure()
         {
-            this.Deposit(calculateInterest() / 365, "Interest Paid");
+            double interest = calculateInterest() / 365;
+            if(interest > 0)
+                this.Deposit(calculateInterest()/365, "Interest Paid");
         }
 
         public double InterestEarned()
@@ -90,16 +91,15 @@ namespace abc_bank
         private double calculateInterest()
         {
             double amount = sumTransactions();
-            switch (accountType)
-            {
+            switch(accountType){
                 case SAVINGS:
                     if (amount <= 1000)
                         return amount * 0.001;
                     else
-                        return 1 + (amount - 1000) * 0.002;
+                        return 1 + (amount-1000) * 0.002;
                 case MAXI_SAVINGS:
-                    double rate = 0.05;
-                    for (int i = 0, j = transactions.Count - 1; j >= 0 && i < 10; j--, i++)
+                    double rate = 0.05;                    
+                    for (int i = 0, j = transactions.Count-1; j >= 0 && i < 10 ; j--, i++)
                     {
                         if (transactions[j].Trans_Type.Equals(Transaction.Trans_Withdraw) &&
                             (DateTime.Now - transactions[j].transactionDate).Days <= 10)
@@ -107,7 +107,7 @@ namespace abc_bank
                             rate = 0.001;
                             break;
                         }
-
+                       
                     }
                     return amount * rate;
                 default:
@@ -115,12 +115,11 @@ namespace abc_bank
             }
         }
 
-        public double sumTransactions()
-        {
-            return CheckIfTransactionsExist(true);
+        public double sumTransactions() {
+           return CheckIfTransactionsExist(true);
         }
 
-        private double CheckIfTransactionsExist(bool checkAll, bool interestTransaction = false)
+        private double CheckIfTransactionsExist(bool checkAll, bool interestTransaction = false) 
         {
             double amount = 0.0;
             double interest = 0.0;
@@ -135,7 +134,7 @@ namespace abc_bank
             return amount;
         }
 
-        public int GetAccountType()
+        public int GetAccountType() 
         {
             return accountType;
         }

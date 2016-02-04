@@ -9,11 +9,19 @@ namespace abc_bank
     public class Bank
     {
         private List<Customer> customers;
-        BankApp ict = new BankApp();
 
-        public Bank()
+        private static Bank instance = null;
+
+        private Bank()
         {
             customers = new List<Customer>();
+        }
+
+        public static Bank getInstance()
+        {
+            if (instance == null)
+                instance = new Bank();
+            return instance;
         }
 
         public void AddCustomer(Customer customer)
@@ -21,8 +29,7 @@ namespace abc_bank
             customers.Add(customer);
         }
 
-        public String CustomerSummary()
-        {
+        public String CustomerSummary() {
             String summary = "Customer Summary";
             foreach (Customer c in customers)
                 summary += "\n - " + c.GetName() + " (" + format(c.GetNumberOfAccounts(), "account") + ")";
@@ -47,10 +54,9 @@ namespace abc_bank
             return bankAllAccounts;
         }
 
-        public double totalInterestPaid()
-        {
+        public double totalInterestPaid() {
             double total = 0;
-
+            
             foreach (Customer c in customers)
                 total += c.TotalInterestEarned();
             return total;
@@ -69,13 +75,13 @@ namespace abc_bank
                 Task.WaitAll(tasks.ToArray());
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw e;
                 return false;
             }
         }
-
+       
         //Unused Method -- can be removed
         public String GetFirstCustomer()
         {

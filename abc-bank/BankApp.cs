@@ -11,7 +11,7 @@ namespace abc_bank
         
         public static void main(String[] args)
         {
-            Bank bofa = new Bank();
+            Bank bofa = Bank.getInstance();
             while (true)
             {
                 DateTime nextDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1, 1, 0, 0);

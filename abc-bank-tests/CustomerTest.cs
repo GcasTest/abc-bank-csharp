@@ -65,7 +65,7 @@ namespace abc_bank_tests
         {
             Customer oscar = new Customer("Oscar");
             Account savings = new Account(Account.SAVINGS);
-            Account checkings = new Account(Account.CHECKING);
+            Account checkings =new Account(Account.CHECKING);
             oscar.OpenAccount(savings);
             oscar.OpenAccount(checkings);
 
@@ -73,7 +73,7 @@ namespace abc_bank_tests
             checkings.Deposit(500);
 
             oscar.transfer(checkings, savings, 500);
-
+            
             Assert.AreEqual(3500, savings.getBalance());
             Assert.AreEqual(1000, checkings.getBalance());
         }
