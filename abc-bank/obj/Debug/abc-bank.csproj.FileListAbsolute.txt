@@ -3,3 +3,8 @@ C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\a
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank\bin\Debug\abc-bank.pdb
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank\obj\Debug\abc-bank.dll
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank\obj\Debug\abc-bank.pdb
+C:\Dev\BAML 3\trunk\abc-bank\bin\Debug\abc-bank.dll
+C:\Dev\BAML 3\trunk\abc-bank\bin\Debug\abc-bank.pdb
+C:\Dev\BAML 3\trunk\abc-bank\obj\Debug\abc-bank.csprojResolveAssemblyReference.cache
+C:\Dev\BAML 3\trunk\abc-bank\obj\Debug\abc-bank.dll
+C:\Dev\BAML 3\trunk\abc-bank\obj\Debug\abc-bank.pdb

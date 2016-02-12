@@ -39,12 +39,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs" />
-    <Compile Include="Bank.cs" />
-    <Compile Include="Customer.cs" />
-    <Compile Include="DateProvider.cs" />
+    <Compile Include="BusinessComponents\InterestStrategies\IInterestStrategy.cs" />
+    <Compile Include="BusinessComponents\InterestStrategies\Impl\CheckingAccountInterestStrategy.cs" />
+    <Compile Include="BusinessComponents\InterestStrategies\Impl\MaxiSavingsAccountFivePercentInterestStrategy.cs" />
+    <Compile Include="BusinessComponents\InterestStrategies\Impl\MaxiSavingsAccountInterestStrategy.cs" />
+    <Compile Include="BusinessComponents\InterestStrategies\Impl\SavingsAccountInterestStrategy.cs" />
+    <Compile Include="Common\DateProvider.cs" />
+    <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Model\Accounts\IAccount.cs" />
+    <Compile Include="Model\Accounts\Impl\AccountBase.cs" />
+    <Compile Include="Model\Accounts\Impl\CheckingAccount.cs" />
+    <Compile Include="Model\Accounts\Impl\MaxiSavingsAccount.cs" />
+    <Compile Include="Model\Accounts\Impl\SavingsAccount.cs" />
+    <Compile Include="Model\Bank.cs" />
+    <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\Transaction.cs" />
+    <Compile Include="Model\TransactionTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

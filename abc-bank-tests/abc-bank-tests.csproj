@@ -50,9 +50,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AccountTest.cs" />
     <Compile Include="BankTest.cs" />
+    <Compile Include="CheckingAccountTest.cs" />
     <Compile Include="CustomerTest.cs" />
+    <Compile Include="MaxiSavingsAccountTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SavingsAccountTest.cs" />
     <Compile Include="TransactionTest.cs" />
   </ItemGroup>
   <ItemGroup>

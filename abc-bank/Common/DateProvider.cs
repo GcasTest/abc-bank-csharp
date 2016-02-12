@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace abc_bank
+namespace abc_bank.Common
 {
+    /// <summary>
+    /// Deprecated. No use for this method at this time
+    /// </summary>
     public class DateProvider
     {
         private static DateProvider instance = null;
