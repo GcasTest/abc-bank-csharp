@@ -15,6 +15,12 @@ namespace abc_bank
 
         public Customer(String name)
         {
+            if (name.StartsWith(" "))
+            {
+                if (string.IsNullOrWhiteSpace(name))
+
+                    throw new ArgumentException("Name cannot begin with a space");
+            }
             this.name = name;
             this.accounts = new List<IAccount>();
         }

@@ -65,6 +65,14 @@ namespace abc_bank_tests
         }
 
         [TestMethod]
+        [ExpectedException (typeof(ArgumentException))]
+        public void TestCustomerNameWithSpace()
+        {
+            var bill = new Customer(" ");
+
+        }
+
+        [TestMethod]
         [Ignore]
         public void TestThreeAccounts()
         {
