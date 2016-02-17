@@ -11,10 +11,18 @@ namespace abc_bank
         public readonly double amount;
 
         private DateTime transactionDate;
+        public DateTime TransactionDate { get { return transactionDate; }  }
 
-        public Transaction(double amount) 
+        public readonly TransactionType tType;
+
+        public string transactionType()
+        {
+            return (this.amount < 0 ? "withdrawal" : "deposit");
+        }
+        public Transaction(double amount)
         {
             this.amount = amount;
+            tType = amount < 0 ? TransactionType.Withdrawal : TransactionType.Deposit;
             this.transactionDate = DateProvider.getInstance().Now();
         }
     }

@@ -10,8 +10,8 @@ namespace abc_bank_tests
         [TestMethod]
         public void TestApp()
         {
-            Account checkingAccount = new Account(Account.CHECKING);
-            Account savingsAccount = new Account(Account.SAVINGS);
+            IAccount checkingAccount = new CheckingAccount(); //Account(Account.CHECKING);
+            IAccount savingsAccount = new SavingsAccount();//Account(Account.SAVINGS);
 
             Customer henry = new Customer("Henry").OpenAccount(checkingAccount).OpenAccount(savingsAccount);
 
@@ -36,7 +36,7 @@ namespace abc_bank_tests
         [TestMethod]
         public void TestOneAccount()
         {
-            Customer oscar = new Customer("Oscar").OpenAccount(new Account(Account.SAVINGS));
+            Customer oscar = new Customer("Oscar").OpenAccount(new SavingsAccount());
             Assert.AreEqual(1, oscar.GetNumberOfAccounts());
         }
 
@@ -44,9 +44,32 @@ namespace abc_bank_tests
         public void TestTwoAccount()
         {
             Customer oscar = new Customer("Oscar")
-                 .OpenAccount(new Account(Account.SAVINGS));
-            oscar.OpenAccount(new Account(Account.CHECKING));
+                 .OpenAccount(new SavingsAccount());
+            oscar.OpenAccount(new CheckingAccount());
             Assert.AreEqual(2, oscar.GetNumberOfAccounts());
+        }
+
+        [TestMethod]
+        public void TestTransferFunds()
+        {
+            Customer oscar = new Customer("Oscar");
+            IAccount oscarsChecking = new CheckingAccount(); //Account(Account.CHECKING);
+            IAccount oscarsSavings = new SavingsAccount();
+            oscar.OpenAccount(oscarsChecking);
+            oscarsChecking.Deposit(100.0);
+            oscar.OpenAccount(oscarsSavings);
+
+            oscar.TransferFunds(oscarsChecking, oscarsSavings, 100);
+            Assert.AreEqual(0, oscarsChecking.sumTransactions());
+
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(ArgumentException))]
+        public void TestCustomerNameWithSpace()
+        {
+            var bill = new Customer(" ");
+
         }
 
         [TestMethod]
@@ -54,8 +77,8 @@ namespace abc_bank_tests
         public void TestThreeAccounts()
         {
             Customer oscar = new Customer("Oscar")
-                    .OpenAccount(new Account(Account.SAVINGS));
-            oscar.OpenAccount(new Account(Account.CHECKING));
+                    .OpenAccount(new SavingsAccount());
+            oscar.OpenAccount(new CheckingAccount());
             Assert.AreEqual(3, oscar.GetNumberOfAccounts());
         }
     }
