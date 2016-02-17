@@ -23,7 +23,14 @@ namespace abc_bank
         {
             return name;
         }
-       
+
+        public void TransferFunds(IAccount fromAccnt, IAccount toAccnt, double amount)
+        {
+            //customer can use the transfer service which implement the ITransferFunds Interface
+            //Future:this is good place to check for Authorization of customer for $ transfer before method call
+            CustomerTransferFunds initiateTransfer = new CustomerTransferFunds();
+            initiateTransfer.Account_To_Account_Transfer(this, fromAccnt, toAccnt, amount);
+        }
 
         public Customer OpenAccount(IAccount account)
         {
