@@ -33,11 +33,11 @@ namespace abc_bank
             return accounts.Count;
         }
 
-        public double TotalInterestEarned() 
+        public double TotalInterestEarned(DateTime asOfDate) 
         {
             double total = 0;
             foreach (Account a in accounts)
-                total += a.InterestEarned();
+                total += a.InterestEarned(asOfDate);
             return total;
         }
 
@@ -49,7 +49,7 @@ namespace abc_bank
             foreach (Account a in accounts) 
             {
                 statement += "\n" + statementForAccount(a) + "\n";
-                total += a.sumTransactions();
+                total += a.SumTransactions();
             }
             statement += "\nTotal In All Accounts " + ToDollars(total);
             return statement;
@@ -60,23 +60,23 @@ namespace abc_bank
             String s = "";
 
            //Translate to pretty account type
-            switch(a.GetAccountType()){
-                case Account.CHECKING:
+            switch(a.AccountType){
+                case AccountType.CHECKING:
                     s += "Checking Account\n";
                     break;
-                case Account.SAVINGS:
+                case AccountType.SAVINGS:
                     s += "Savings Account\n";
                     break;
-                case Account.MAXI_SAVINGS:
+                case AccountType.MAXI_SAVINGS:
                     s += "Maxi Savings Account\n";
                     break;
             }
 
             //Now total up all the transactions
             double total = 0.0;
-            foreach (Transaction t in a.transactions) {
-                s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + ToDollars(t.amount) + "\n";
-                total += t.amount;
+            foreach (Transaction t in a.Transactions) {
+                s += "  " + (t.Amount < 0 ? "withdrawal" : "deposit") + " " + ToDollars(t.Amount) + "\n";
+                total += t.Amount;
             }
             s += "Total " + ToDollars(total);
             return s;
@@ -84,7 +84,7 @@ namespace abc_bank
 
         private String ToDollars(double d)
         {
-            return String.Format("$%,.2f", Math.Abs(d));
+            return String.Format("{0:C}", Math.Abs(d));
         }
     }
 }
