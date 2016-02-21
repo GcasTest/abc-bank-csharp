@@ -121,7 +121,7 @@ namespace abc_bank_tests
             maxiSavingsAccount.Deposit(100.0);
             maxiSavingsAccount.Withdraw(100.0);
 
-            Assert.AreEqual(153.80248940234196, bank.TotalInterestPaid(DateTime.Now.AddYears(1)), DOUBLE_DELTA);
+            Assert.AreEqual(154.23451714061685, bank.TotalInterestPaid(DateTime.Now.AddYears(1)), DOUBLE_DELTA);
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace abc_bank_tests
             maxiSavingsAccount.Deposit(100.0);
             maxiSavingsAccount.Withdraw(100.0);
 
-            Assert.AreEqual(3.0014963864118727, bank.TotalInterestPaid(DateTime.Now.AddDays(9)), DOUBLE_DELTA);
+            Assert.AreEqual(0.073973413402654842, bank.TotalInterestPaid(DateTime.Now.AddDays(9)), DOUBLE_DELTA);
         }
         #endregion
 

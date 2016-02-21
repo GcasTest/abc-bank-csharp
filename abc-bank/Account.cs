@@ -80,27 +80,12 @@ namespace abc_bank
 
         public double InterestEarned(DateTime asOfDate) 
         {
-            return interestCalculator(this, asOfDate);
+            double amount = 0;
 
-            //double amount = SumTransactions();
-            //switch(AccountType){
-            //    case AccountType.SAVINGS:
-            //        return savingsInterest(this, asOfDate);
-            //        //if (amount <= 1000)
-            //        //    return amount * 0.001;
-            //        //else
-            //        //    return 1 + (amount-1000) * 0.002;
-            //    case AccountType.MAXI_SAVINGS:
-            //        if (amount <= 1000)
-            //            return amount * 0.02;
-            //        if (amount <= 2000)
-            //            return 20 + (amount-1000) * 0.05;
-            //        return 70 + (amount-2000) * 0.1;
-            //    case AccountType.CHECKING:
-            //        return amount * 0.001;
-            //    default:
-            //        return amount * 0.001;
-            //}
+           // foreach(Transaction tran in this.Transactions)   
+                amount += interestCalculator(this, asOfDate);
+            return amount;
+
         }
 
         public double SumTransactions()
@@ -112,22 +97,52 @@ namespace abc_bank
         static double InterestCalculatorSavings(Account account, DateTime asofDate)
         {
             double amount = 0.0;
-            amount = account.SumTransactions();
-            if (amount <= 1000)
-                return InterestRateHelper.CalculateTotalWithCompoundInterest(amount, 0.001, 365, 1);
-            else
-                return InterestRateHelper.CalculateTotalWithCompoundInterest(1000, 0.001, 365, 1) + (amount - 1000) * 0.002;
 
+            var results = account.Transactions.GroupBy(e => e.TransactionDate.Date)
+                .OrderByDescending(
+                    g => g.Key)
+                 .Select(
+                     r => new Transaction() { TransactionDate = r.Key, Amount = r.Sum(e => e.Amount) });
+
+            foreach (Transaction tran in results)
+            {
+                
+                if (tran.Amount <= 1000)
+                {
+                    int days = InterestRateHelper.CalculateDaysToCompoundInterestDaily(1000, tran.Amount, .001, tran.TransactionDate, asofDate);
+                    if (days > 1)
+                    {
+                        amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily(tran.Amount, 0.001, asofDate.AddDays(-days).Subtract(tran.TransactionDate).Days);
+                        // if the daily interest earned over 1000  during the timespan  (IE  you have $999 at 2% over a year.  About a half a year it will be over)
+                        amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily((amount - 1000), 0.002, asofDate.Subtract(tran.TransactionDate).Days);
+                    }
+                    else
+                        amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily(tran.Amount, 0.001, asofDate.Subtract(tran.TransactionDate).Days);
+                    
+                }
+                else
+                {
+                    amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily(1000, 0.001, asofDate.Subtract(tran.TransactionDate).Days);
+                    amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily((tran.Amount - (1000+amount)), 0.002, asofDate.Subtract(tran.TransactionDate).Days);
+                }
+
+            }
+            return amount;
         }
 
 
         static double InterestCalculatorChecking(Account account, DateTime asofDate)
         {
             double amount = 0.0;
-            amount = account.SumTransactions();
-            
-            return InterestRateHelper.CalculateTotalWithCompoundInterest(amount, 0.001, 365, 1); // 
-         //   return amount * 0.001;
+
+            var results = account.Transactions.GroupBy(e => e.TransactionDate.Date) 
+                .OrderByDescending(                 
+                    g => g.Key)
+                 .Select(                         
+                     r => new Transaction() { TransactionDate = r.Key, Amount = r.Sum(e => e.Amount) });
+            foreach (Transaction tran in results)
+                amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily(tran.Amount, .001, asofDate.Subtract(tran.TransactionDate).Days);
+            return amount;  
         }
 
 
@@ -135,22 +150,32 @@ namespace abc_bank
         {
 
             //Change Maxi-Savings accounts to have an interest rate of 5% assuming no withdrawals in the past 10 days otherwise 0.1%
-            
             double amount = 0.0;
-            amount = account.SumTransactions();
-            if (account.Transactions.Where(x => x.Amount < 0 && x.TransactionDate.AddDays(10) > asofDate.Date).Count()>0)
-                return InterestRateHelper.CalculateTotalWithCompoundInterest(amount, 0.001, 365, 1); 
-            else
-                return InterestRateHelper.CalculateTotalWithCompoundInterest(amount, 0.05, 365, 1);
+
+            var results = account.Transactions.GroupBy(e => e.TransactionDate.Date)
+                .OrderByDescending(
+                    g => g.Key)
+                 .Select(
+                     r => new Transaction() { TransactionDate = r.Key, Amount = r.Sum(e => e.Amount) });
+            foreach (Transaction tran in results)
+            {
+                if (account.Transactions.Where(x => x.Amount < 0 && x.TransactionDate.AddDays(10) > asofDate.Date).Count() > 0)
+                    amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily(tran.Amount, 0.001, asofDate.Subtract(tran.TransactionDate).Days);
+                else
+                    amount += InterestRateHelper.CalculateTotalWithCompoundInterestDaily(tran.Amount, 0.05, asofDate.Subtract(tran.TransactionDate).Days);
+            }
+            return amount;
+
+
+            //double amount = 0.0;
+            //amount = account.SumTransactions();
+            
+            //    return InterestRateHelper.CalculateTotalWithCompoundInterest(amount, 0.001, 365, 1); 
+            //else
+            //    return InterestRateHelper.CalculateTotalWithCompoundInterest(amount, 0.05, 365, 1);
 
         }
-        //private double CheckIfTransactionsExist(bool checkAll) 
-        //{
-        //    double amount = 0.0;
-        //    foreach (Transaction t in Transactions)
-        //        amount += t.Amount;
-        //    return amount;
-        //}
+
 
     }
 
@@ -167,6 +192,19 @@ namespace abc_bank
         public static double CalculateTotalWithCompoundInterest(double principal, double interestRate, int compoundingPeriodsPerYear, double yearCount)
         {
             return principal * (double)Math.Pow((double)(1 + interestRate / compoundingPeriodsPerYear), compoundingPeriodsPerYear * yearCount) - principal;
+        }
+
+        public static double CalculateTotalWithCompoundInterestDaily(double principal, double interestRate,  double dayCount)
+        {
+            return principal * (double)Math.Pow((double)(1 + interestRate / (365) ), dayCount) - principal;
+        }
+
+        public static int CalculateDaysToCompoundInterestDaily(double interestEarned, double principal, double interestRate, DateTime startdate, DateTime endDate)
+        {
+            int days = Convert.ToInt32(Math.Ceiling(Math.Log(interestEarned / principal) / Math.Log(1 + interestRate / 365)));
+            if ((endDate - startdate.Date).Days < days)
+                days = -1;
+            return days;
         }
     }
     

@@ -7,3 +7,4 @@ C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank\bin\Debug\abc-bank.dll
 C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank\bin\Debug\abc-bank.pdb
 C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank\obj\Debug\abc-bank.dll
 C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank\obj\Debug\abc-bank.pdb
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank\obj\Debug\abc-bank.csprojResolveAssemblyReference.cache

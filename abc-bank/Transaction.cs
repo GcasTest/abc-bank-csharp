@@ -11,9 +11,9 @@ namespace abc_bank
         //public readonly double amount;
 
         //private DateTime TransactionDate;
-
-        public DateTime TransactionDate { get; private set; }
-        public double Amount { get; private set; }
+        public Transaction() { }
+        public DateTime TransactionDate { get; set; }
+        public double Amount { get; set; }
 
         public Transaction(double amount) 
         {
