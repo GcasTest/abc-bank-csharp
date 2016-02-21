@@ -5,3 +5,12 @@ C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\a
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank-tests\obj\Debug\abc-bank-tests.csprojResolveAssemblyReference.cache
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank-tests\obj\Debug\abc-bank-tests.dll
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank-tests\obj\Debug\abc-bank-tests.pdb
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\obj\Debug\abc-bank-tests.csprojResolveAssemblyReference.cache
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\obj\Debug\abc-bank-tests.dll
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\obj\Debug\abc-bank-tests.pdb
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\bin\Debug\abc-bank-tests.dll
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\bin\Debug\abc-bank-tests.pdb
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\bin\Debug\abc-bank.dll
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\bin\Debug\abc-bank.pdb
+C:\Users\jwgib\Source\Repos\abc-bank-csharp\abc-bank-tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
