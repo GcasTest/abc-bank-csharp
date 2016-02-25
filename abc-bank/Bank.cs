@@ -10,6 +10,7 @@ namespace abc_bank
     {
         private List<Customer> customers;
 
+        #region public
         public Bank()
         {
             customers = new List<Customer>();
@@ -21,38 +22,39 @@ namespace abc_bank
         }
 
         public String CustomerSummary() {
-            String summary = "Customer Summary";
+            StringBuilder summary = new StringBuilder();
+            summary.Append("Customer Summary");
             foreach (Customer c in customers)
-                summary += "\n - " + c.GetName() + " (" + format(c.GetNumberOfAccounts(), "account") + ")";
-            return summary;
+            {
+                summary.Append("\n - " + c.Name + " (" + Format(c.GetNumberOfAccounts(), "account") + ")"); 
+            }
+            return summary.ToString();
         }
 
-        //Make sure correct plural of word is created based on the number passed in:
-        //If number passed in is 1 just return the word otherwise add an 's' at the end
-        private String format(int number, String word)
-        {
-            return number + " " + (number == 1 ? word : word + "s");
-        }
 
-        public double totalInterestPaid() {
-            double total = 0;
+        public decimal TotalInterestPaid() {
+            decimal total = 0.0M;
             foreach(Customer c in customers)
                 total += c.TotalInterestEarned();
             return total;
         }
 
-        public String GetFirstCustomer()
+        // This method needs ne called daily using a service
+        public void DepositeDailyInterestForAllCustomers()
         {
-            try
+            foreach (Customer c in this.customers)
             {
-                customers = null;
-                return customers[0].GetName();
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.StackTrace);
-                return "Error";
+                c.DepositeDailyInterest(c.Accounts);
             }
         }
+        #endregion
+
+        #region private
+
+        private String Format(int number, String word)
+        {
+            return number + " " + (number == 1 ? word : word + "s");
+        }
+        #endregion
     }
 }

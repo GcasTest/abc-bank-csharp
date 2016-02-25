@@ -8,83 +8,127 @@ namespace abc_bank
 {
     public class Customer
     {
-        private String name;
-        private List<Account> accounts;
+        public string Name { get; set; }
 
+        public List<Account> Accounts { get; set; }
+
+        #region public
         public Customer(String name)
         {
-            this.name = name;
-            this.accounts = new List<Account>();
-        }
-
-        public String GetName()
-        {
-            return name;
+            this.Name = name;
+            this.Accounts = new List<Account>();
         }
 
         public Customer OpenAccount(Account account)
         {
-            accounts.Add(account);
-            return this;
+            if (CheckIfAccountExists(account))
+                throw new ArgumentException("Account of this type already exist!");
+            else
+            {
+                Accounts.Add(account);
+                return this;
+            }
         }
+
 
         public int GetNumberOfAccounts()
         {
-            return accounts.Count;
+            return Accounts.Count;
         }
 
-        public double TotalInterestEarned() 
+        public decimal TotalInterestEarned() 
         {
-            double total = 0;
-            foreach (Account a in accounts)
+            decimal total = 0;
+            foreach (Account a in Accounts)
                 total += a.InterestEarned();
             return total;
+        }
+
+        public void TransferFundsBetweenAccounts(Account from, Account to, decimal amount)
+        {
+            decimal FromAccountBalanceBeforeTransfer = from.CurrentBalance;
+            decimal ToAccountBalanceBeforeTransfer = to.CurrentBalance;
+            Guid? FundWithdrawID = null;
+            Guid? FundDepositeID = null;
+
+            if (!IsTransferValid(from, to, amount))
+                return;
+
+            try
+            {
+                FundWithdrawID = from.Withdraw(amount);
+                FundDepositeID = to.Deposit(amount,TranscationType.CREDIT);
+            }
+            catch (Exception e)
+            {
+                if (FundWithdrawID != null)
+                    from.transactions.RemoveAll(t => t.TransactionId == FundWithdrawID);
+                if (FundDepositeID != null)
+                    to.transactions.RemoveAll(t => t.TransactionId == FundDepositeID);
+                from.CurrentBalance = FromAccountBalanceBeforeTransfer;
+                to.CurrentBalance = ToAccountBalanceBeforeTransfer;
+
+                throw new Exception("Error occured! Please try again later");
+            }
+
+        }   
+
+        public void DepositeDailyInterest(List<Account> accounts)
+        {
+            foreach (Account a in accounts)
+            {
+                a.DepositeDailyInterest();
+            }
         }
 
         public String GetStatement() 
         {
             String statement = null;
-            statement = "Statement for " + name + "\n";
-            double total = 0.0;
-            foreach (Account a in accounts) 
+            statement = "Statement for " + Name + Environment.NewLine;
+            decimal total = 0.0M;
+            foreach (Account a in Accounts) 
             {
-                statement += "\n" + statementForAccount(a) + "\n";
-                total += a.sumTransactions();
+                statement += Environment.NewLine + a.StatementForAccount() + Environment.NewLine;
+                total += a.CurrentBalance; //a.sumTransactions();
             }
-            statement += "\nTotal In All Accounts " + ToDollars(total);
+            statement += Environment.NewLine + "Total In All Accounts " + ToDollars(total);
             return statement;
         }
+        #endregion
 
-        private String statementForAccount(Account a) 
+        #region private
+
+        private bool IsTransferValid(Account from, Account to, decimal amount)
         {
-            String s = "";
-
-           //Translate to pretty account type
-            switch(a.GetAccountType()){
-                case Account.CHECKING:
-                    s += "Checking Account\n";
-                    break;
-                case Account.SAVINGS:
-                    s += "Savings Account\n";
-                    break;
-                case Account.MAXI_SAVINGS:
-                    s += "Maxi Savings Account\n";
-                    break;
+            if (CheckIfAccountExists(from) && CheckIfAccountExists(to))
+            {
+                if (from.CurrentBalance >= amount)
+                    return true;
+                else
+                    throw new ArgumentException("Not enough fund available");
             }
-
-            //Now total up all the transactions
-            double total = 0.0;
-            foreach (Transaction t in a.transactions) {
-                s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + ToDollars(t.amount) + "\n";
-                total += t.amount;
-            }
-            s += "Total " + ToDollars(total);
-            return s;
+            else
+                throw new ArgumentException("Invalid account");
         }
 
-        private String ToDollars(double d)
+        private bool CheckIfAccountExists(Account account)
         {
-            return String.Format("$%,.2f", Math.Abs(d));
+            bool accountExists = false;
+            foreach (Account a in this.Accounts)
+            {
+
+                if (a.GetType() == account.GetType())
+                    accountExists = true;
+            }
+            return accountExists;
         }
+
+
+        private String ToDollars(decimal d)
+        {
+            return String.Format("{0:c}", Math.Abs(d));
+        }
+
+        #endregion
     }
 }

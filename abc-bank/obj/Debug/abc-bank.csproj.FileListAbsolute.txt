@@ -3,3 +3,14 @@ C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\a
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank\bin\Debug\abc-bank.pdb
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank\obj\Debug\abc-bank.dll
 C:\Users\luce\Desktop\abc-bank-master\abc-bank-master\abc-bank-dotnet\abc-bank\abc-bank\obj\Debug\abc-bank.pdb
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\abc-bank.dll
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\abc-bank.pdb
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\mscorlib.dll
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\normidna.nlp
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\normnfc.nlp
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\normnfd.nlp
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\normnfkc.nlp
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\bin\Debug\normnfkd.nlp
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\obj\Debug\abc-bank.csprojResolveAssemblyReference.cache
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\obj\Debug\abc-bank.dll
+C:\Users\Neha VM\Documents\GitHub\abc-bank-csharp\abc-bank-csharp\abc-bank\obj\Debug\abc-bank.pdb
