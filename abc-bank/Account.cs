@@ -6,79 +6,95 @@ using System.Threading.Tasks;
 
 namespace abc_bank
 {
-    public class Account
+    public abstract class Account
     {
 
-        public const int CHECKING = 0;
-        public const int SAVINGS = 1;
-        public const int MAXI_SAVINGS = 2;
-
-        private readonly int accountType;
         public List<Transaction> transactions;
 
-        public Account(int accountType) 
+        public decimal CurrentBalance { get; set; }
+
+
+        #region public
+
+        public Account() 
         {
-            this.accountType = accountType;
             this.transactions = new List<Transaction>();
         }
 
-        public void Deposit(double amount) 
+        public Guid Deposit(decimal amount, TranscationType transactionType) 
         {
             if (amount <= 0) {
                 throw new ArgumentException("amount must be greater than zero");
             } else {
-                transactions.Add(new Transaction(amount));
+                Transaction transaction = new Transaction(amount, transactionType);
+                transactions.Add(transaction);
+                this.CurrentBalance += amount;
+                return transaction.TransactionId;
             }
         }
 
-        public void Withdraw(double amount) 
+        public Guid Withdraw(decimal amount) 
         {
             if (amount <= 0) {
                 throw new ArgumentException("amount must be greater than zero");
             } else {
-                transactions.Add(new Transaction(-amount));
+                Transaction transaction = new Transaction(-amount, TranscationType.DEBIT);
+                transactions.Add(transaction);
+                this.CurrentBalance -= amount;
+                return transaction.TransactionId;
             }
         }
 
-        public double InterestEarned() 
+        public abstract decimal InterestEarnedDaily();
+        
+        public abstract decimal InterestEarned();
+
+        public virtual String GetAccountStatementHeading()
         {
-            double amount = sumTransactions();
-            switch(accountType){
-                case SAVINGS:
-                    if (amount <= 1000)
-                        return amount * 0.001;
-                    else
-                        return 1 + (amount-1000) * 0.002;
-    //            case SUPER_SAVINGS:
-    //                if (amount <= 4000)
-    //                    return 20;
-                case MAXI_SAVINGS:
-                    if (amount <= 1000)
-                        return amount * 0.02;
-                    if (amount <= 2000)
-                        return 20 + (amount-1000) * 0.05;
-                    return 70 + (amount-2000) * 0.1;
-                default:
-                    return amount * 0.001;
+            return "Base Account" + Environment.NewLine;
+        }
+
+        public String StatementForAccount()
+        {
+            StringBuilder s = new StringBuilder();
+
+            s.Append(this.GetAccountStatementHeading());
+
+            decimal total = 0.0M;
+            foreach (Transaction t in this.transactions)
+            {
+                s.Append("  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + ToDollars(t.amount) + Environment.NewLine);
+                total += t.amount;
             }
+            s.Append("Total " + ToDollars(total));
+            return s.ToString();
         }
 
-        public double sumTransactions() {
-           return CheckIfTransactionsExist(true);
-        }
-
-        private double CheckIfTransactionsExist(bool checkAll) 
+        public void DepositeDailyInterest()
         {
-            double amount = 0.0;
-            foreach (Transaction t in transactions)
-                amount += t.amount;
-            return amount;
+            if (HasInterestBeenPaid())
+                throw new ArgumentException("Interest has been for today");
+
+            this.Deposit(InterestEarnedDaily(), TranscationType.INTEREST);
         }
 
-        public int GetAccountType() 
+        #endregion
+
+        #region private
+
+        private bool HasInterestBeenPaid()
         {
-            return accountType;
+            return this.transactions.Any(t => t.transactionDate.ToShortDateString() == DateTime.Today.ToShortDateString() 
+                                            && t.TransactionType == TranscationType.INTEREST);
         }
+
+
+        private String ToDollars(decimal d)
+        {
+            return String.Format("{0:c}", Math.Abs(d));
+        }
+        #endregion
+
 
     }
 }

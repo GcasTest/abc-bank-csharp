@@ -10,7 +10,8 @@ namespace abc_bank
     {
         private static DateProvider instance = null;
 
-        public static DateProvider getInstance()
+        #region public
+        public static DateProvider GetInstance()
         {
             if (instance == null)
                 instance = new DateProvider();
@@ -21,5 +22,6 @@ namespace abc_bank
         {
             return DateTime.Now;
         }
+        #endregion
     }
 }
